@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faList, faRepeat, faPlus, faHouse, faTrash, faPen, faCartShopping} from '@fortawesome/free-solid-svg-icons';
+
+library.add(faList, faRepeat, faPlus, faHouse, faTrash, faPen, faCartShopping);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

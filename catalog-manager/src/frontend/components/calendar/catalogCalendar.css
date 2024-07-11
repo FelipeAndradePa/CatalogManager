@@ -1,0 +1,23 @@
+.altered-day {
+    background: #eeba01 !important; /* Cor de fundo para dias alterados */
+    color: white !important; /* Cor do texto */
+    border-radius: 50%; /* Tornar o marcador circular */
+    padding: 5px;
+}
+.react-calendar {
+  border: none;
+}
+.react-calendar__month-view__weekdays {
+  border-bottom: none;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+}
+.react-calendar__tile {
+  border: none;
+  outline: none;
+}
+.react-calendar__tile--now {
+  background: rgb(74 222 128);
+}

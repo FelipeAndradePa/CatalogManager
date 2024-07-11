@@ -68,3 +68,10 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+### O projeto conterá:
+###                    página com algumas infos
+###                    página para cadastro de peças 
+###                    página para visualização das peças e informações presentes no catálogo atual
+###                    página com histórico de alterações
