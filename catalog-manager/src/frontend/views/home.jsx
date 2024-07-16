@@ -25,13 +25,6 @@ const Home = () => {
                         </div>
                         <CatalogCalendar alterationDates={alterationDates} />
                     </div>
-                    <div className="flex flex-col items-center card shadow p-3">
-                        <div className="pt-4 border-b-2">
-                            <h2 className="text-slate-500 text-lg font-semibold">Histórico de Alterações</h2>
-                        </div>
-                        <Historic limit={4}></Historic>
-                        <button className="bg-green-500 hover:bg-green-700 rounded-full py-2 w-40 text-white font-bold">Visualizar todas</button>
-                    </div>
                 </div>
                 <div className="my-16 flex flex-col items-center card shadow p-3">
                         <div className="px-4 pt-4 border-b-2">
@@ -39,6 +32,13 @@ const Home = () => {
                         </div>
                         <Catalog limit={4}></Catalog>
                         <button className="bg-green-500 hover:bg-green-700 rounded-full py-2 w-56 text-white font-bold">Ver catálogo completo</button>
+                </div>
+                <div className="flex flex-col items-center card shadow p-3">
+                        <div className="pt-4 border-b-2">
+                            <h2 className="text-slate-500 text-lg font-semibold">Histórico de Alterações</h2>
+                        </div>
+                        <Historic limit={4}></Historic>
+                        <button className="bg-green-500 hover:bg-green-700 rounded-full py-2 w-40 text-white font-bold">Visualizar todas</button>
                 </div>
             </div>
         </div>

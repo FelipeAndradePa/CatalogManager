@@ -196,23 +196,18 @@ router.patch('/edit/:id', async (req, res) => {
 });
 
 router.patch('/editImage/:id', async (req, res) => {
-    const { imageId } = req.params;
-    const { newImage } = req.body;
+    const { id } = req.params;
+    const { value } = req.body;
 
     try {
-        const [updated] = await Image.update(
-            {
-                url: newImage
-            },
-            {
-                where: {id: imageId}
-            }
-        )
+        const image = await Image.findByPk(id);
 
-        if (updated) {
-            const updatedImage = await Image.findByPk(id);
-            return res.status(200).json(updatedImage);
-        }
+        image.url = value;
+
+        await image.save();
+
+        res.status(200).json(image);
+
     } catch (error) {
 
     }

@@ -6,10 +6,10 @@ import Title from "../../components/title/title";
 import { modalHistory } from "../../components/modal/modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Historic = ({limit = false}) => {
+const Historic = ({ limit = false }) => {
 
     const [history, setHistory] = useState([]);
-    
+
     useEffect(() => {
 
         const fetchData = async () => {
@@ -44,19 +44,19 @@ const Historic = ({limit = false}) => {
 
     return (
         <div>
-            {!limit && 
+            {!limit &&
                 <div className='font-sans'>
                     <Title title='Histórico de Alterações' icon='repeat'></Title>
                 </div>
             }
             <div className={`${!limit ? 'py-16' : 'py-8'}`}>
-                <table className={`${!limit ? 'table-auto w-full' : 'table-fixed'}`}>
+                <table className={`${!limit ? 'table-auto w-full' : 'table-fixed w-full'}`}>
                     <thead>
                         <tr className="border-b-2">
                             <th className="text-center text-slate-500 font-medium">Data</th>
                             <th className="text-center text-slate-500 font-medium">Hora</th>
                             <th className="text-center text-slate-500 font-medium">Alteração</th>
-                            {!limit && <th className="text-center text-slate-500 font-medium">Ações</th>}
+                            <th className="text-center text-slate-500 font-medium">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,15 +73,13 @@ const Historic = ({limit = false}) => {
                                         {hst.arrAlterations.map((arr) => (
                                             <li>
                                                 {arr}
-                                            </li>                                        
+                                            </li>
                                         ))}
                                     </ol>
                                 </td>
-                                {!limit && 
-                                    <td className="py-3 text-center">
-                                        <button onClick={() => modalHistory(hst.pieceId, hst.id)} className="text-green-500"><FontAwesomeIcon icon='repeat' /></button>
-                                    </td>
-                                }
+                                <td className="py-3 text-center">
+                                    <button onClick={() => modalHistory(hst.pieceId, hst.id)} className="text-green-500"><FontAwesomeIcon icon='repeat' /></button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

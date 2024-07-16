@@ -17,7 +17,7 @@ const showModalInclusion = (includedPieces) => {
         `,
         didOpen: () => {
             document.getElementById('createNew').addEventListener('click', () => {
-                generatePdf()
+                generatePdf(includedPieces)
                 axios.post('http://localhost:3001/api/create', { includedPieces})
                     .then(response => {
                         console.log('Novo catálogo criado:', response.data);
@@ -150,6 +150,8 @@ const changeImage = (imageId) => {
         }
     }).then((prefixedImageUrl) => {
         const value = prefixedImageUrl.value;
+        console.log(value);
+        console.log(imageId);
         axios.patch(`http://localhost:3001/api/editImage/${imageId}`, {value})
                     .then(response => {
                         console.log('Imagem alterada no catálogo:', response.data);

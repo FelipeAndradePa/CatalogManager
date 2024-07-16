@@ -1,4 +1,4 @@
-import React , {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import Title from "../../components/title/title";
 import { showModalDelete, showModalEdit } from "../../components/modal/modal";
@@ -64,33 +64,33 @@ const Catalog = ({ limit = false }) => {
                             <th className="text-center text-slate-500 font-medium">Descrição</th>
                             <th className="text-center text-slate-500 font-medium">Tamanhos</th>
                             <th className="text-center text-slate-500 font-medium">Valor</th>
-                            {!limit && <th className="text-center text-slate-500 font-medium">Ações</th>}
+                            <th className="text-center text-slate-500 font-medium">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         {limitedCatalog.map((catalog) => (
                             <tr key={catalog.id}>
                                 <td className="py-3 text-center">
-                                    <img src={catalog.images[0].url} alt="Peça" className="h-32 w-32" />
+                                    <div className="flex justify-center items-center">
+                                        <img src={catalog.images[0].url} alt="Peça" className="h-36 w-36" />
+                                    </div>
                                 </td>
-                                <td className="py-3 text-center">
+                                <td className="py-3 text-center align-middle">
                                     {catalog.reference_code}
                                 </td>
-                                <td className="py-3 text-center">
+                                <td className="py-3 text-center align-middle">
                                     {catalog.description}
                                 </td>
-                                <td className="py-3 text-center">
+                                <td className="py-3 text-center align-middle">
                                     {catalog.sizes}
                                 </td>
-                                <td className="py-3 text-center">
+                                <td className="py-3 text-center align-middle">
                                     {catalog.value}
                                 </td>
-                                {!limit &&
-                                    <td className="py-3 text-center">
-                                        <button onClick={() => showModalEdit(catalog.id)} className="text-blue-500"><FontAwesomeIcon icon='pen' /></button>
-                                        <button onClick={() => showModalDelete(catalog.id)} className="ms-4 text-red-500"><FontAwesomeIcon icon='trash' /></button>
-                                    </td>
-                                }
+                                <td className="py-3 text-center align-middle">
+                                    <button onClick={() => showModalEdit(catalog.id)} className="text-blue-500"><FontAwesomeIcon icon='pen' /></button>
+                                    <button onClick={() => showModalDelete(catalog.id)} className="ms-4 text-red-500"><FontAwesomeIcon icon='trash' /></button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

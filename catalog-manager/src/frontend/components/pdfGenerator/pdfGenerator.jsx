@@ -1,108 +1,103 @@
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import { saveAs } from 'file-saver';
-import img from '../../../assets/ModelosStreet.png';
-import imgPiece from '../../../assets/silk e devore.png';
+import img from '../../../assets/1720715543820.jpeg';
 
+const generatePdf = async (includedPieces) => {
 
-const generatePdf = async () => {
-
-  // CRIA O NOVO PDF
-  const pdfDoc = await PDFDocument.create();
-  const page = pdfDoc.addPage([595.28, 900]);
-  const { width, height } = page.getSize();
-  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-  var fontSize = 23;
-  var yPos = height - 120;
-
+  console.log(includedPieces.description);
   // FUNÇÃO PARA ADICIONAR UMA NOVA PÁGINA SE FOR NECESSÁRIO
-  const addNewPageIfNeeded = () => {
-    if (yPos < 20) {
-      yPos = height - 50;
-      return pdfDoc.addPage([595.28, 900]);
-    }
-    return null;
-  };
 
-  // ADIÇÃO DA PRIMEIRA IMAGEM
-  var url = img;
-  var imageBytes = await fetch(url).then(res => res.arrayBuffer());
-  var image = await pdfDoc.embedPng(imageBytes);
-  var imageDims = image.scale(0.4);
-  page.drawImage(image, {
-    x: (width - imageDims.width) / 2,
-    y: yPos,
-    width: imageDims.width,
-    height: imageDims.height,
-  });
+  // FUNÇÃO PARA CARREGAR UMA IMAGEM
+  async function loadImage(url) {
+    const imageBytes = await fetch(url).then(res => res.arrayBuffer());
+    return imageBytes;
+  }
 
-  yPos -= 30;
-  addNewPageIfNeeded();
+  async function createPDF() {
+    // CRIA O NOVO PDF
+    const pdfDoc = await PDFDocument.create();
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
-  // ADIÇÃO DO TEXTO DE GRADE
-  var dispText = 'Grade do 38 ao 46';
-  var textWidth = font.widthOfTextAtSize(dispText, fontSize);
-  var textX = (width - textWidth) / 2;
-  page.drawText(dispText, {
-    x: textX,
-    y: yPos,
-    size: fontSize,
-    color: rgb(0, 0, 0),
-  });
+    for (const item of includedPieces) {
+      for (const image of item.imagesToSave) {
+        const page = pdfDoc.addPage([595.28, 900]);
+        const { width, height } = page.getSize();
+        const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        //var fontSize = 23;
+        //var yPos = height - 120;
 
-  yPos -= 350;
-  addNewPageIfNeeded();
+        // Carrega a imagem de plano de fundo
+        const bgImageBytes = await loadImage(image);
+        const bgImage = await pdfDoc.embedJpg(bgImageBytes);
 
-  // ADIÇÃO DA PRIMEIRA FOTO DA PEÇA
-  url = imgPiece;
-  imageBytes = await fetch(url).then(res => res.arrayBuffer());
-  image = await pdfDoc.embedPng(imageBytes);
-  imageDims = image.scale(0.9);
-  page.drawImage(image, {
-    x: width - imageDims.width - 100,
-    y: yPos,
-    width: imageDims.width,
-    height: imageDims.height,
-  });
+        // OBTEM AS dimensões da página
+        const pageWidth = page.getWidth();
+        const pageHeight = page.getHeight();
 
-  yPos -= 330;
-  addNewPageIfNeeded();
+        // Desenha a imagem como plano de fundo
+        page.drawImage(bgImage, {
+          x: 0,
+          y: page.getHeight() - height,
+          width: page.getWidth(),
+          height: page.getHeight(),
+        });
 
-  // ADIÇÃO DA SEGUNDA IMAGEM DA PEÇA
-  page.drawImage(image, {
-    x: 100,
-    y: yPos,
-    width: imageDims.width,
-    height: imageDims.height,
-  });
+        // Adiciona os textos com diferentes tamanhos e estilos
+        const textX = 30;
+        let textY = pageHeight - 80;
 
-  yPos += 320;
-  addNewPageIfNeeded();
+        // Texto da referência
+        page.drawText(item.reference, {
+          x: textX,
+          y: textY,
+          size: 18,
+          font,
+          color: rgb(0, 0, 0),
+        });
 
-  // ADIÇÃO DA DESCRIÇÃO DO BACKGROUND DA DESCRIÇÃO
-  fontSize = 20;
-  dispText = 'Calça com silk CODI e devorê';
-  textWidth = font.widthOfTextAtSize(dispText, fontSize);
-  textX = (width - textWidth) / 2;
-  page.drawRectangle({
-    x: 115,
-    y: yPos - 6,
-    width: 370,
-    height: fontSize + 5,
-    color: rgb(0.725, 0.1, 0.1),
-  });
+        textY -= 20; // Move a posição Y para o próximo texto
 
-  // ADIÇÃO DA DESCRIÇÃO DA PEÇA
-  page.drawText(dispText, {
-    x: textX,
-    y: yPos,
-    size: fontSize,
-    color: rgb(1, 1, 1),
-  });
+        const sizesString = item.sizes.join(' - ');
+        // Texto do tamanho
+        page.drawText(sizesString, {
+          x: textX,
+          y: textY,
+          size: 14,
+          font,
+          color: rgb(0, 0, 0),
+        });
 
-  // SALVA O PDF E FAZ O DOWNLOAD
-  const pdfBytes = await pdfDoc.save();
-  const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-  saveAs(blob, 'catalog.pdf');
+        textY -= 20;
+
+        // Texto da cor
+        page.drawText(item.description, {
+          x: textX,
+          y: textY,
+          size: 14,
+          font,
+          color: rgb(0, 0, 0),
+        });
+
+        textY -= 20;
+
+        // Texto do preço
+        page.drawText(item.value, {
+          x: textX,
+          y: textY,
+          size: 14,
+          font,
+          color: rgb(0, 0, 0),
+        });
+      }
+    };
+
+    // SALVA O PDF E FAZ O DOWNLOAD
+    const pdfBytes = await pdfDoc.save();
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    saveAs(blob, 'catalog.pdf');
+  }
+
+  createPDF().catch(err => console.log(err));
 };
 
 

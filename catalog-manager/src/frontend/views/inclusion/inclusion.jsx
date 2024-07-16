@@ -102,7 +102,6 @@ const Inclusion = () => {
         selectedImages.forEach((image) => {
             formData.append('images', image.file);
         });
-        console.log(formData);
         try {
             const response = await axios.post('http://localhost:3001/api/upload', formData, {
                 headers: {
@@ -112,7 +111,6 @@ const Inclusion = () => {
             const imageUrl = response.data.urls;
             setImageUrls(response.data.urls);
             const prefixedImageUrl = imageUrl.map(url => 'http://localhost:3001' + url);
-            console.log(prefixedImageUrl);
             const dataToSend = {
                 ...formGeneralData,
                 imageView: prefixedImageUrl[0], // imagem para visualização
@@ -123,7 +121,6 @@ const Inclusion = () => {
             };
 
             setIncludedPieces([...includedPieces, dataToSend]);
-            console.log(includedPieces);
     
         } catch (error) {
             console.error("Erro ao fazer upload das imagens:", error);
